@@ -31,7 +31,7 @@ export interface Group {
   type: GroupType;
   members: User[];
   isFinished?: boolean;
-  bracket?: Match[];
+  bracket?: Match[] | null;
 }
 
 export interface MatchAlertData {
