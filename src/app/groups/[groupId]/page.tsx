@@ -35,7 +35,7 @@ const addUserSchema = z.object({
 });
 
 
-const LeagueGroup = ({ group, activeUser, handleSetSessionUser, setModalUser, handleAddWin, maxScore, isFinished }) => (
+const LeagueGroup = ({ group, activeUser, handleSetSessionUser, setModalUser, handleAddWin, maxScore, isFinished } : {group: Group, activeUser: User | null, handleSetSessionUser: Function, setModalUser: Function, handleAddWin: Function, maxScore: number, isFinished : boolean }) => (
     <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
         <h2 className="text-2xl font-bold font-headline border-b pb-2">Members</h2>
@@ -89,10 +89,10 @@ const LeagueGroup = ({ group, activeUser, handleSetSessionUser, setModalUser, ha
   </div>
 );
 
-const EliminatoryGroup = ({ group, handleSetWinner, isFinished }) => {
+const EliminatoryGroup = ({ group, handleSetWinner, isFinished } : {group: Group, handleSetWinner: Function, isFinished: boolean}) => {
     if (!group.bracket) return <p>This tournament has no bracket yet.</p>;
 
-    const rounds = group.bracket.reduce((acc, match) => {
+    const rounds = group.bracket.reduce((acc: Record<number, Match[]>, match: Match) => {
         acc[match.round] = acc[match.round] || [];
         acc[match.round].push(match);
         return acc;
@@ -253,12 +253,8 @@ export default function GroupPage() {
         const hasMatch = member.decksIWant.some(d => d.id === newDeck.id);
         if (hasMatch) {
             toast({
-                title: (
-                    <div className="flex items-center">
-                        <Lightbulb className="mr-2 h-4 w-4 text-accent" />
-                        <span>Deck Match Found!</span>
-                    </div>
-                ),
+                title: "Deck Match Found!"
+                ,
                 description: (
                     <p>
                         <strong>{updatedUser.name}</strong> and <strong>{member.name}</strong> both want:{' '}
@@ -434,9 +430,9 @@ export default function GroupPage() {
         <p className="text-lg text-muted-foreground capitalize mb-8">{group.type}</p>
 
         {group.type === 'league' ? (
-            <LeagueGroup group={group} activeUser={activeUser} handleSetSessionUser={handleSetSessionUser} setModalUser={setModalUser} handleAddWin={handleAddWin} maxScore={maxScore} isFinished={isFinished}/>
+            <LeagueGroup group={group} activeUser={activeUser} handleSetSessionUser={handleSetSessionUser} setModalUser={setModalUser} handleAddWin={handleAddWin} maxScore={maxScore} isFinished={isFinished ?? false}/>
         ) : (
-            <EliminatoryGroup group={group} handleSetWinner={handleSetWinner} isFinished={isFinished}/>
+            <EliminatoryGroup group={group} handleSetWinner={handleSetWinner} isFinished={isFinished ?? false}/>
         )}
 
       </main>
