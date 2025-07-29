@@ -449,3 +449,16 @@ export default function GroupPage() {
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  // Simulación: obtener los grupos desde localStorage no es posible en build
+  // Así que para export estática, debes devolver una lista fija o cargada de un JSON
+
+  const groups = [
+    { slug: ['grupo-a'] },
+    { slug: ['grupo-b'] },
+    { slug: ['grupo-c'] },
+  ];
+
+  return groups;
+}
